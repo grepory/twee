@@ -75,12 +75,14 @@ def main (argv):
 		rss_file.close()
 		
 	# output the target header
+
+	print tw.toHeader(scriptPath)
 	
-	if (target != 'none') and (target != 'plugin'):
-		file = open(scriptPath + os.sep + 'targets' + os.sep + target \
-								+ os.sep + 'header.html')
-		print(file.read())
-		file.close()
+#	if (target != 'none') and (target != 'plugin'):
+#		file = open(scriptPath + os.sep + 'targets' + os.sep + target \
+#								+ os.sep + 'header.html')
+#		print(file.read())
+#		file.close()
 	
 	# the tiddlers
 	

@@ -44,6 +44,29 @@ class TiddlyWiki:
 			output += self.tiddlers[i].toTwee()
 		
 		return output
+
+	def toHeader (self, path, target = None):
+		"""Creates a header."""
+		output = ''
+
+		output += '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">'
+		output += import_text(path,'html','license.html')
+		output += '<html><head><meta http-equiv="Content-Type" content="text/xhtml; charset=UTF-8">'
+		output += '<title>Your Twee/Twine Story</title>'
+		output += '<script type="text/javascript">'
+		output += import_text(path,'js','compressed.js')
+		output += '</script><style type="text/css">'
+		output += import_text(path,'css','common.css')
+		output += '</style></head><body>'
+		output += import_text(path,'html','sidebar.html')
+		output += '<div id="snapbackMenu" class="menu"></div>'
+		output += import_text(path,'html','share.html')
+		output += '<div id="passages"></div><div id="storeArea">'
+
+
+
+		return output
+
 		
 	def toHtml (self, app = None, target = None, order = None):
 		"""Returns HTML code for this TiddlyWiki. If target is passed, adds a header."""
@@ -51,9 +74,7 @@ class TiddlyWiki:
 		output = ''
 		
 		if (target):
-			header = open(app.getPath() + os.sep + 'targets' + os.sep + target + os.sep + 'header.html')
-			output = header.read()
-			header.close()
+			output += tw.toHeader(app.getPath(),target)
 		
 		for i in order:
 			output += self.tiddlers[i].toHtml(self.author)
@@ -368,3 +389,12 @@ def encode_date (date):
 def decode_date (date):
 	"""Decodes a datetime from TiddlyWiki format."""
 	return time.strptime(date, '%Y%m%d%H%M')
+
+
+def import_text (path,sourcesubdir,sourcefile):
+	"""Imports a file for use in header output."""
+	input = open(path + os.sep + 'sources' + os.sep + sourcesubdir + os.sep + sourcefile)
+	output = input.read()
+	input.close()
+
+	return output
