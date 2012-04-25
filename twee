@@ -15,7 +15,7 @@ def main (argv):
 	# defaults
 	
 	author = 'twee'
-	target = 'jonah'
+	target = None
 	merge = rss_output = ''
 	plugins = []
 	
@@ -76,13 +76,7 @@ def main (argv):
 		
 	# output the target header
 
-	print tw.toHeader(scriptPath)
-	
-#	if (target != 'none') and (target != 'plugin'):
-#		file = open(scriptPath + os.sep + 'targets' + os.sep + target \
-#								+ os.sep + 'header.html')
-#		print(file.read())
-#		file.close()
+	print tw.toHeader(scriptPath,target)
 	
 	# the tiddlers
 	
@@ -98,7 +92,8 @@ def main (argv):
 	
 	# and close it up
 	
-	print '</div></html>'
+	print tw.toFooter(scriptPath,target)
+
 
 
 if __name__ == '__main__':

@@ -45,29 +45,42 @@ class TiddlyWiki:
 		
 		return output
 
-	def toHeader (self, path, target = None):
+	def toHeader (self, path, target = None, base = 'common'):
 		"""Creates a header."""
 		output = ''
 
-		output += '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">'
-		output += import_text(path,'html','license.html')
-		output += '<html><head><meta http-equiv="Content-Type" content="text/xhtml; charset=UTF-8">'
-		output += '<title>Your Twee/Twine Story</title>'
-		output += '<script type="text/javascript">'
-		output += import_text(path,'js','compressed.js')
-		output += '</script><style type="text/css">'
-		output += import_text(path,'css','common.css')
-		output += '</style></head><body>'
-		output += import_text(path,'html','sidebar.html')
-		output += '<div id="snapbackMenu" class="menu"></div>'
-		output += import_text(path,'html','share.html')
-		output += '<div id="passages"></div><div id="storeArea">'
-
-
+		output += '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\n'
+		output += '<html><head>\n<!-- This file was created with Twee -->'
+		output += import_text(path,base,'license.html')
+		output += '<meta http-equiv="Content-Type" content="text/xhtml; charset=UTF-8">'
+		if (target):
+			output += import_text(path,target,'head.html')
+		output += '<title>Your Twee Story</title>\n<script type="text/javascript">\n'
+		output += import_text(path,base,'compressed.js')
+		if (target):
+			output += import_text(path,target,'local.js')
+		output += '</script>\n<style type="text/css">\n'
+		output += import_text(path,base,'common.css')
+		if (target):
+			output += import_text(path,target,'compressed.css')
+		output += '</style>\n</head><body>\n'
+		if (target):
+			output += import_text(path,target,'body.html')
+		else:
+			output += import_text(path,base,'body.html')
+		output += '<div id="passages"></div>\n<div id="storeArea">'
 
 		return output
 
-		
+	def toFooter (self, path, target = None, base = 'common'):
+		"""Creates a footer to close the document."""
+		output = '</div>'
+		if (target):
+			output += import_text(path,target,'foot.html')
+		output += '</body></html>'
+
+		return output
+	
 	def toHtml (self, app = None, target = None, order = None):
 		"""Returns HTML code for this TiddlyWiki. If target is passed, adds a header."""
 		if not order: order = self.tiddlers.keys()
@@ -80,7 +93,7 @@ class TiddlyWiki:
 			output += self.tiddlers[i].toHtml(self.author)
 		
 		if (target):
-			output += '</div></body></html>'
+			output += tw.toFooter(app.getPath(),target)
 		
 		return output
 	
@@ -393,7 +406,7 @@ def decode_date (date):
 
 def import_text (path,sourcesubdir,sourcefile):
 	"""Imports a file for use in header output."""
-	input = open(path + os.sep + 'sources' + os.sep + sourcesubdir + os.sep + sourcefile)
+	input = open(path + os.sep + 'targets' + os.sep + sourcesubdir + os.sep + sourcefile)
 	output = input.read()
 	input.close()
 
