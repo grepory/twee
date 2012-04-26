@@ -7,11 +7,20 @@ Once you have all those, open the Terminal or a command prompt, change to the tw
 
     ./twee my-input-file.tw > my-output-file.html
 
-To compile to Sugarcane instead of Jonah, use the -t flag:
+To compile to a specific target, use the -t flag:
 
     ./twee -t sugarcane my-input-file.tw > my-other-output-file.html
 
-The other targets are not recommended.  
+There is no longer a default target.  Omitting the target results in a very simple default layout.
+
+Customization
+=============
+
+The targets/local directory is intended for local configuration.  Add any desired css directives to the css file.  Add new macros to the js file.  There are three files to which HTML can be added:  head.html, for header lines (such as a reference to an external stylesheet), body.html for formatting the body of the story (including sidebars and changes to the title text layout), and foot.html for any elements that should appear after the story text.
+
+You can also make a copy of targets/local or of one of the other directories in targets to base a new target layout on an existing one.
+
+Please be careful to back up any target changes before downloading a new version of twee.  There is no mechanism here to prevent overwriting of edited files.
 
 ***
 
