@@ -1,2 +1,7 @@
-
+# compiled python files
 lib/*.pyc
+
+# Emacs backup files
+*~
+# Emacs file locks
+.#*
