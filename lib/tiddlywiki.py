@@ -64,6 +64,8 @@ class TiddlyWiki:
 			template = template.replace('<%TWEE:::STYLE%>','<style type="text/css">\n' + import_text(path,base,'common.css') + '\n</style>',1)
 			template = template.replace('<%TWEE:::PASSAGES%>','<div id="passages"></div>',1)
 			template = template.replace('<%TWEE:::TIDDLERS%>','<div id="storeArea">' + output + '</div>',1)
+			template = template.replace('<%TWEE:::OLDTIDDLERS%>',output + '</div>',1)
+			template = template.replace('<%TWEE:::ENGINE%>','Twee')
 
 			return template
 
@@ -398,7 +400,7 @@ def check_for_template (path, target = None, base = 'common'):
 			template = import_text(path,target,"template.html")
 		elif (check_for_file(path,target,"header.html")):
 			template = import_text(path,target,"header.html")
-			template += '<%TWEE:::TIDDLERS%>'
+			template += '<%TWEE:::OLDTIDDLERS%>'
 			template += '</div></body></html>'
 		else:
 			template = import_text(path,base,"template.html")
