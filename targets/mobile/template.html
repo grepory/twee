@@ -1,5 +1,35 @@
-//style.css start
-  //insert local css directives here
+<!-- template.html start -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<!-- This file was created with Twee -->
+<%TWEE:::LICENSE%>
+
+<!-- iOS -->
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<link rel="apple-touch-icon" href="images/twee-57x57.png" />
+	<link rel="apple-touch-icon" sizes="57x57" href="images/twee-57x57.png" />
+	<link rel="apple-touch-icon" sizes="72x72" href="images/twee-72x72.png" />
+	<link rel="apple-touch-icon" sizes="114x114" href="images/twee-114x114.png" />
+	<link rel="apple-touch-icon" sizes="129x129" href="images/twee-129x129.png" />
+	<link rel="apple-touch-startup-image" sizes="320x460" href="images/twee-320x460.png" />
+<!-- /iOS -->
+
+<!-- jQM -->
+	<meta name="viewport" content="width=device-width, initial-scale=1"> 
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" />
+	<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
+<!-- /jQM -->
+
+
+<title>Your Twee Story</title>
+<meta http-equiv="Content-Type" content="text/xhtml; charset=UTF-8">
+
+<%TWEE:::SCRIPT%>
+<%TWEE:::STYLE%>
+<style>
 body{background-color:#e0e0c0;color:#220000;font-family:Georgia,Times,"Times New Roman",serif;background-image:none!important;}
 #sidebar, #sidebar ul, #sidebar ul li{text-align:right;list-style:none;}
 #title h2{margin:0;padding:0;}
@@ -35,6 +65,30 @@ a.brokenLink{background-color:red;text-decoration:none;color:#000;}
 .passage th,.passage td,.passage tr,.passage caption{padding:3px;}
 .passage hr{height:1px;}
 #storeArea{display:none;}
+</style>
 
-//style.css end
+</head>
+<body>
+
+<div id="content">
+
+<div id="title" data-role="header" class="header" data-theme="c"><h1 style="margin-left:15%;margin-right:15%" id="storyTitle"></h1>
+<span id="titleSeparator" style="display:none;"></span>
+<span id="storyMenu" style="display:none;"></span>
+<span id="snapback" style="display:none;"></span>
+<span id="restart" style="display:none;"></span>
+<span id="share" style="display:none;"></span>
+      <a href="#" data-icon="back" data-iconpos="notext" data-direction="back" data-rel="back" title="Rewind">Rewind</a>
+      <a href="javascript:Interface.restart();" data-icon="refresh" data-iconpos="notext" data-direction="reverse" title="Restart">Restart</a>
+</div>
+
+
+<%TWEE:::PASSAGES%>
+<%TWEE:::TIDDLERS%>
+
+
+</div>
+</body>
+</html>
+<!-- template.html end -->
 

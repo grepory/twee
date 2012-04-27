@@ -15,7 +15,7 @@ def main (argv):
 	# defaults
 	
 	author = 'twee'
-	target = None
+	target = 'local'
 	merge = rss_output = ''
 	plugins = []
 	
@@ -74,27 +74,10 @@ def main (argv):
 		tw.toRss().write_xml(rss_file)
 		rss_file.close()
 		
-	# output the target header
-
-	print tw.toHeader(scriptPath,target)
+	# the entire output
 	
-	# the tiddlers
+	print tw.toHtml(scriptPath,target)
 	
-	print tw.toHtml()
-	
-	# plugins
-	
-	for plugin in plugins:
-		file = open(scriptPath + os.sep + 'targets' + os.sep + target \
-								+ os.sep + 'plugins' + os.sep + plugin + os.sep + 'compiled.html')
-		print(file.read())
-		file.close()
-	
-	# and close it up
-	
-	print tw.toFooter(scriptPath,target)
-
-
 
 if __name__ == '__main__':
 	main(sys.argv[1:])

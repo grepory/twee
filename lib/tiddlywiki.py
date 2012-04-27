@@ -14,6 +14,7 @@
 
 import re, datetime, time, os, sys
 import PyRSS2Gen as rss
+#import pdb
 
 #
 # TiddlyWiki class
@@ -44,59 +45,31 @@ class TiddlyWiki:
 			output += self.tiddlers[i].toTwee()
 		
 		return output
-
-	def toHeader (self, path, target = None, base = 'common'):
-		"""Creates a header."""
-		output = ''
-
-		output += '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\n'
-		output += '<html><head>\n<!-- This file was created with Twee -->'
-		output += import_text(path,base,'license.html')
-		output += '<meta http-equiv="Content-Type" content="text/xhtml; charset=UTF-8">'
-		if (target):
-			output += import_text(path,target,'head.html')
-		output += '<title>Your Twee Story</title>\n<script type="text/javascript">\n'
-		output += import_text(path,base,'compressed.js')
-		if (target):
-			output += import_text(path,target,'local.js')
-		output += '</script>\n<style type="text/css">\n'
-		output += import_text(path,base,'common.css')
-		if (target):
-			output += import_text(path,target,'compressed.css')
-		output += '</style>\n</head><body>\n'
-		if (target):
-			output += import_text(path,target,'body.html')
-		else:
-			output += import_text(path,base,'body.html')
-		output += '<div id="passages"></div>\n<div id="storeArea">'
-
-		return output
-
-	def toFooter (self, path, target = None, base = 'common'):
-		"""Creates a footer to close the document."""
-		output = '</div>'
-		if (target):
-			output += import_text(path,target,'foot.html')
-		output += '</body></html>'
-
-		return output
 	
-	def toHtml (self, app = None, target = None, order = None):
-		"""Returns HTML code for this TiddlyWiki. If target is passed, adds a header."""
+	def toHtml (self, path = None, target = None, order = None, base = 'common'):
+		"""Returns HTML code for this TiddlyWiki. If target is passed, adds a template."""
 		if not order: order = self.tiddlers.keys()
 		output = ''
-		
+
 		if (target):
-			output += tw.toHeader(app.getPath(),target)
+			template = check_for_template(path,target,base)
 		
 		for i in order:
 			output += self.tiddlers[i].toHtml(self.author)
 		
 		if (target):
-			output += tw.toFooter(app.getPath(),target)
-		
-		return output
-	
+			"""substitute"""
+			template = template.replace('<%TWEE:::LICENSE%>',import_text(path,base,'license.html'),1)
+			template = template.replace('<%TWEE:::SCRIPT%>','<script type="text/javascript">\n' + import_text(path,base,'compressed.js') + '\n</script>',1)
+			template = template.replace('<%TWEE:::STYLE%>','<style type="text/css">\n' + import_text(path,base,'common.css') + '\n</style>',1)
+			template = template.replace('<%TWEE:::PASSAGES%>','<div id="passages"></div>',1)
+			template = template.replace('<%TWEE:::TIDDLERS%>','<div id="storeArea">' + output + '</div>',1)
+
+			return template
+
+		else:
+			return output
+
 	def toRtf (self, order = None):
 		"""Returns RTF source code for this TiddlyWiki."""
 		if not order: order = self.tiddlers.keys()
@@ -411,3 +384,25 @@ def import_text (path,sourcesubdir,sourcefile):
 	input.close()
 
 	return output
+
+def check_for_file (path,sourcesubdir,sourcefile):
+	"""Check for file existence."""
+
+	return os.path.isfile(path + os.sep + 'targets' + os.sep + sourcesubdir + os.sep + sourcefile)
+
+def check_for_template (path, target = None, base = 'common'):
+	"""Fetches the template or makes a template out of an old-style header.html."""
+
+	if (target):
+		if (check_for_file(path,target,"template.html")):
+			template = import_text(path,target,"template.html")
+		elif (check_for_file(path,target,"header.html")):
+			template = import_text(path,target,"header.html")
+			template += '<%TWEE:::TIDDLERS%>'
+			template += '</div></body></html>'
+		else:
+			template = import_text(path,base,"template.html")
+	else:
+		template = import_text(path,base,"template.html")
+		
+	return template
